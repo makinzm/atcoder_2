@@ -11,6 +11,9 @@ fn main() {
         w: i32,
         m: [Chars; h],
     };
+	// Warning: sample test is only square.
+// 1 5
+// snuke
 	// only search starting from `s`
 	for x in 0..h{
 		for y in 0..w{
@@ -25,7 +28,7 @@ fn main() {
 						}
 						let xplus4 = (x + 4*dx) as usize;
 						let yplus4 = (y + 4*dy) as usize;
-						if xplus4 < w as usize && yplus4 < h as usize {
+						if xplus4 < h as usize && yplus4 < w as usize {
 							// println!("{},{} -> {},{}",x,y,xplus4,yplus4);
 							if m[(x+1*dx) as usize][(y+1*dy) as usize] == 'n' 
 							&& m[(x+2*dx) as usize][(y+2*dy) as usize] == 'u' 
