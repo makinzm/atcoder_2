@@ -17,15 +17,11 @@ fn main() {
 			if m[x as usize][y as usize] == 's'{
 				for dx in -1..=1{
 					for dy in -1..=1{
-						if dx < 0{
-							if x < (4*(dx as i32).abs()){
-								continue;
-							}
+						if dx < 0 && x < (4*(dx as i32).abs()){
+							continue;
 						}
-						if dy < 0{
-							if y < (4*(dy as i32).abs()){
-								continue;
-							}
+						if dy < 0 && y < (4*(dy as i32).abs()){
+							continue;
 						}
 						let xplus4 = (x + 4*dx) as usize;
 						let yplus4 = (y + 4*dy) as usize;
