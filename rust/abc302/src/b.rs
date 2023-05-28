@@ -27,14 +27,14 @@ fn main() {
 								continue;
 							}
 						}
-						let xplus4 = (x as i32 + 4*dx) as usize;
-						let yplus4 = (y as i32 + 4*dy) as usize;
+						let xplus4 = (x + 4*dx) as usize;
+						let yplus4 = (y + 4*dy) as usize;
 						if xplus4 < w as usize && yplus4 < h as usize {
 							// println!("{},{} -> {},{}",x,y,xplus4,yplus4);
-							if m[(x as i32+1*dx) as usize][(y as i32+1*dy) as usize] == 'n' 
-							&& m[(x as i32+2*dx) as usize][(y as i32+2*dy) as usize] == 'u' 
-							&& m[(x as i32+3*dx) as usize][(y as i32+3*dy) as usize] == 'k' 
-							&& m[(x as i32+4*dx) as usize][(y as i32+4*dy) as usize] == 'e'
+							if m[(x+1*dx) as usize][(y+1*dy) as usize] == 'n' 
+							&& m[(x+2*dx) as usize][(y+2*dy) as usize] == 'u' 
+							&& m[(x+3*dx) as usize][(y+3*dy) as usize] == 'k' 
+							&& m[(x+4*dx) as usize][(y+4*dy) as usize] == 'e'
 							{
 								for i in 0..=4{
 									println!("{} {}",(x+i*dx+1) as usize,(y+i*dy+1) as usize);
