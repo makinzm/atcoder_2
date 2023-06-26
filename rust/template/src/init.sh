@@ -8,7 +8,7 @@ fi
 directory="../../$1"
 
 if [ ! -d "$directory" ]; then
-  mkdir -p "$directory"
+  mkdir -p "$directory/src"
   echo "Created directory: $directory"
 else
   echo "Directory already exists: $directory"
