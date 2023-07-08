@@ -8,6 +8,9 @@ go/*/*
 .idea
 *.class
 
+# Scala
+*.tasty
+
 # Rust
 rust/template/src/*
 
