@@ -1,5 +1,8 @@
 .DS_Store
 
+# C++
+*.out
+
 # Go
 go/*/*
 !go/*/*.go
