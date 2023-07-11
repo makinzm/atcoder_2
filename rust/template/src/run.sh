@@ -1,3 +1,7 @@
-#!bin/bash
+#!/bin/bash
 
-cargo run --bin $1
+filename=$(basename "$1")
+# extension="${filename##*.}"
+basename="${filename%.*}"
+
+cargo run --bin "$basename"
