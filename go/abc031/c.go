@@ -54,7 +54,7 @@ func main() {
 			ans = max(takahashi_max, ans)
 		}
 	}
-	println(ans)
+	fmt.Println(ans)
 }
 
 func max(i int, j int) int {
