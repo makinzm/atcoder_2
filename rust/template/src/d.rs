@@ -36,14 +36,14 @@ fn main() {
 		current_string.insert(i,character);
 	}
 
-	println!("{}",s);
-
 	for (t,x,c) in txc{
-		for (key, value) in &current_upper {
-			println!("Key: {}, Value: {}", key, value);
-		}
+		// for (key, value) in &current_upper {
+		// 	println!("Key: {}, Value: {}", key, value);
+		// }
+		// for (key, value) in &current_string {
+		// 	println!("Key: {}, Value: {}", key, value);
+		// }
 		if t == 1 {
-			println!("1");
 			let x_minus_one = x - 1;
 			current_upper.insert(
 				x_minus_one,
@@ -55,24 +55,29 @@ fn main() {
 			);
 		} 
 		if t == 2 {
-			println!("2");
-			for i in 0..n{
-				current_upper.insert(
-					i,
-					true
-				);
-			}
-		} 
-		if t == 3{
-			println!("3");
 			for i in 0..n{
 				current_upper.insert(
 					i,
 					false
 				);
 			}
+		} 
+		if t == 3{
+			for i in 0..n{
+				current_upper.insert(
+					i,
+					true
+				);
+			}
 		}
 	}
+
+	// for (key, value) in &current_upper {
+	// 	println!("Key: {}, Value: {}", key, value);
+	// }
+	// for (key, value) in &current_string {
+	// 	println!("Key: {}, Value: {}", key, value);
+	// }
 
 	for i in 0..n {
 		let current_upper_value = current_upper.get(&i).expect("Value not found");
