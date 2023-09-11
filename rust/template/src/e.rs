@@ -90,7 +90,11 @@ impl Vertex{
 	}
 }
 
-fn insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(vs: &mut Vec<Vertex>, inps: Vec<Vec<usize>>) -> (usize,usize){
+fn insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(
+		vs: &mut Vec<Vertex>, 
+		medicine_indices: &mut HashMap<usize,Medicine>,
+		inps: Vec<Vec<usize>>
+	) -> (usize,usize){
 	// insert inputs to vertices
 	let mut count = 1;
 	let mut medicine_index = 0;
@@ -120,6 +124,13 @@ fn insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(vs: &m
 					medicine_index
 				};
 				vs.push(Vertex::Medicine(medicine));
+				// It's difficult to assign Medicine reference.
+				if let Vertex::Medicine(medicine) = &vs[count]{
+					medicine_indices.insert(
+						medicine_index,
+						*medicine
+					);
+				}
 				medicine_index += 1;
 			},
 			_ => panic!("This is a terrible problem!")
@@ -130,21 +141,6 @@ fn insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(vs: &m
 }
 
 fn update_children(vs: &mut Vec<Vertex>){
-
-	// rustc --explain E0499
-	// for vertex in vs.iter_mut(){
-	// 	if let Vertex::Enemy(enemy) = vertex{
-	// 		vs[enemy.parent].get_children().push(enemy.my_index);
-	// 	}
-	// }
-
-	// rustc --explain E0499
-	// let len = vs.len();
-    // for i in 0..len {
-    //     if let Vertex::Enemy(enemy) = &mut vs[i] {
-    //         vs[enemy.parent].get_children().push(enemy.my_index);
-    //     }
-    // }
 
 	let len = vs.len();
 	for i in 0 ..len{
@@ -185,11 +181,11 @@ fn update_dp(
 			// 検索性...
 			// TODO: どのように薬が取られるか,
 			// Indexをどのように振るべきか考えながら設計する.
-			current_state *= vertices[];
-			while(pq.len() > 0){
-				let enemy = pq.pop();
+			// current_state *= vertices[];
+			// while(pq.len() > 0){
+			// 	let enemy = pq.pop();
 
-			}
+			// }
 
 			let bit_str = format!("{:0width$b}", value, width = n);
 			let modified_str = format!("{:0width$b}", previous_state, width = n);
@@ -207,8 +203,14 @@ fn main() {
 	}; 
 	println!("{:?}",inps);
 	let mut vertices = Vec::<Vertex>::new();
+	let mut medicine_indeces = HashMap::<usize,Medicine>::new();
 	vertices.push(Vertex::InitialPoint(InitialPoint { children: Vec::new(), my_index: 0 }));
-	let (num_medicine, biggest_condition) = insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(&mut vertices, inps);
+	let (num_medicine, biggest_condition) = 
+		insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(
+			&mut vertices, 
+			&mut medicine_indeces,
+			inps
+		);
 	update_children(&mut vertices);
 
 	/// Policy
