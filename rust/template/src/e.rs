@@ -92,7 +92,7 @@ impl Vertex{
 
 fn insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(
 		vs: &mut Vec<Vertex>, 
-		medicine_indices: &mut HashMap<usize,Medicine>,
+		medicine_indices: &mut HashMap<usize,usize>,
 		inps: Vec<Vec<usize>>
 	) -> (usize,usize){
 	// insert inputs to vertices
@@ -125,11 +125,13 @@ fn insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(
 				};
 				vs.push(Vertex::Medicine(medicine));
 				// It's difficult to assign Medicine reference.
-				if let Vertex::Medicine(medicine) = &vs[count]{
+				if let Vertex::Medicine(_) = &vs[count]{
 					medicine_indices.insert(
 						medicine_index,
-						*medicine
+						count
 					);
+				} else {
+					panic!("This must be a medicine.")
 				}
 				medicine_index += 1;
 			},
@@ -203,12 +205,12 @@ fn main() {
 	}; 
 	println!("{:?}",inps);
 	let mut vertices = Vec::<Vertex>::new();
-	let mut medicine_indeces = HashMap::<usize,Medicine>::new();
+	let mut medicine_indices = HashMap::<usize,usize>::new();
 	vertices.push(Vertex::InitialPoint(InitialPoint { children: Vec::new(), my_index: 0 }));
 	let (num_medicine, biggest_condition) = 
 		insert_inputs_to_vertices_and_send_num_medicines_and_biggest_condition(
 			&mut vertices, 
-			&mut medicine_indeces,
+			&mut medicine_indices,
 			inps
 		);
 	update_children(&mut vertices);
