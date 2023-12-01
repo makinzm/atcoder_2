@@ -37,6 +37,13 @@ path = "src/f.rs"
 name = "g"
 path = "src/g.rs"
 
+[[bin]]
+name = "parallel"
+path = "src/parallel.rs"
+
+[[bin]]
+name = "not_parallel"
+path = "src/not_parallel.rs"
 
 [dependencies]
 
