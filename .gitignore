@@ -13,6 +13,8 @@ go/*/*
 
 # Scala
 *.tasty
+.metals
+.vscode
 
 # Rust
 rust/template/src/*
