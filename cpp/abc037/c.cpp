@@ -11,11 +11,16 @@ int main(){
     for (int i=0; i<n; i++){
         cin >> a[i];
     }
-    long long sum = 0;
+    // vector to store the sum of partial a[0:i]
+    vector<long long> sum(n+1);
+    sum[0] = 0;
     for (int i=0; i<n; i++){
-        // n-k+1 is the maximum number of times that a[i] is added to the sum.
-        // k is also the maximum number of times that a[i] is added to the sum.
-        sum += a[i] * min(min(min(i+1, n-i),n-k+1),k);
+        sum[i+1] = sum[i] + a[i];
     }
-    cout << sum << endl;
+    // calculate the sum of partial a[i:i+k]
+    long long ans = 0;
+    for (int i=0; i<n-k+1; i++){
+        ans += sum[i+k] - sum[i];
+    }
+    cout << ans << endl;
 }
