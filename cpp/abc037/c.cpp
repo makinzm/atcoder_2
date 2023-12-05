@@ -7,20 +7,13 @@ using namespace std;
 int main(){
     int n, k;
     cin >> n >> k;
-    vector<int> a(n);
+    vector<long long> a(n);
     for (int i=0; i<n; i++){
         cin >> a[i];
     }
-    // vector to store the sum of partial a[0:i]
-    vector<long long> sum(n+1);
-    sum[0] = 0;
+    long long sum = 0;
     for (int i=0; i<n; i++){
-        sum[i+1] = sum[i] + a[i];
+        sum += a[i] * min(min(min(i+1, n-i),n-k+1),k);
     }
-    // calculate the sum of partial a[i:i+k]
-    long long ans = 0;
-    for (int i=0; i<n-k+1; i++){
-        ans += sum[i+k] - sum[i];
-    }
-    cout << ans << endl;
+    cout << sum << endl;
 }
