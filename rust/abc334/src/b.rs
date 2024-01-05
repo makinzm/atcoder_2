@@ -13,11 +13,11 @@ fn main() {
     };
 	let (min_k, max_k): (isize, isize);
 	if (l-a) % m == 0 {
-		min_k = (l-a)/m;
+		min_k = (l-a).div_euclid(m);
 	} else {
-		min_k = (l-a)/m + 1;
+		min_k = (l-a).div_euclid(m) + 1;
 	}
-	max_k = (r-a)/m;
+	max_k = (r-a).div_euclid(m);
 	// println!("min_k: {}, max_k: {}", min_k, max_k);
 	if min_k > max_k {
 		println!("{}", 0);
