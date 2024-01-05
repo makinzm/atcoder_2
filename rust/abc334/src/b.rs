@@ -11,8 +11,13 @@ fn main() {
 		l: isize,
 		r: isize,
     };
-	let min_k: isize = (((l as f64)-(a as f64))/(m as f64)).ceil() as isize;
-	let max_k: isize = (((r as f64)-(a as f64))/(m as f64)).floor() as isize;
+	let (min_k, max_k): (isize, isize);
+	if (l-a) % m == 0 {
+		min_k = (l-a)/m;
+	} else {
+		min_k = (l-a)/m + 1;
+	}
+	max_k = (r-a)/m;
 	// println!("min_k: {}, max_k: {}", min_k, max_k);
 	if min_k > max_k {
 		println!("{}", 0);

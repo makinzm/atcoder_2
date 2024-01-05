@@ -1,35 +1,35 @@
 #[allow(unused_imports)]
 use proconio::{
-    fastout, input
+    fastout, input,
 };
 
 #[fastout]
 fn main() {
-	input!{
-        n: usize, k: usize,
-        a: [usize; n],
+	input! {
+		a: isize,
+		m: isize,
+		l: isize,
+		r: isize,
+    };
+	let (min_k, max_k): (isize, isize);
+	if (l-a) % m == 0 {
+		min_k = (l-a)/m;
+	} else {
+		min_k = (l-a)/m + 1;
 	}
-
-	let mut a_count = 0;
-
-	// separate a into a lot of increasing sequences
-	let mut a_seq = vec![];
-	let mut a_seq_len = 0;
-	for i in 0..n-1 {
-		if a[i] < a[i+1] {
-			a_seq_len += 1;
+	max_k = (r-a)/m;
+	// println!("min_k: {}, max_k: {}", min_k, max_k);
+	if min_k > max_k {
+		println!("{}", 0);
+		return;
+	} else if min_k == max_k {
+		if a + min_k*m >= l && a + min_k*m <= r {
+			println!("{}", 1);
+			return;
 		} else {
-			a_seq.push(a_seq_len);
-			a_seq_len = 0;
+			println!("{}", 0);
+			return;
 		}
 	}
-	a_seq.push(a_seq_len);
-	
-	for i in 0..a_seq.len() {
-		if a_seq[i] >= k-1 {
-			a_count += (a_seq[i] + 1) - k + 1;
-		}
-	}
-
-	println!("{}", a_count);
+	println!("{}", max_k - min_k + 1);
 }
