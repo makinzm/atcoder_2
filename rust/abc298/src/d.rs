@@ -2,51 +2,42 @@
 use proconio::{
     fastout, input
 };
+use std::collections::VecDeque;
 
-// I have to care overflow...
+// Review: I fogot the feature of modulo operation.
 // O(q) 
 fn main() {
 	let module = 998244353;
-	input! {
-		q: usize,
+	let overflow_limit = 998244;
+	let mut pows_lst = vec![1];
+	for _ in 0..overflow_limit{
+		let last = *pows_lst.last().unwrap() as isize;
+		pows_lst.push(last.checked_mul(10).unwrap().checked_rem_euclid(module).unwrap());
 	}
-	let mut start = 0;
-	let mut stop = 1; // not included
-	let mut state_stack = vec![1];
-	let mut ans = (0, 1, 1, 1); // (start, stop, ans, ans % module)
-	// O(2q) = O(q)
+	input! {
+		q: isize,
+	}
+	let mut state_stack = VecDeque::new();
+	state_stack.push_back(1);
+	let mut ans: isize = 1;
+	// O(q)
 	for _ in 0..q{
-		input! { order: usize }
+		input! { order: isize }
 		match order {
 			1 => {
-				input! { x: usize }
-				stop += 1;
-				state_stack.push(x);
+				input! { x: isize }
+				state_stack.push_back(x);
+				ans = (ans.checked_mul(10).unwrap() + x).checked_rem_euclid(module).unwrap();
 			}
 			2 => {
-				start += 1;
+				let mut x = state_stack.pop_front().unwrap();
+				x = x.checked_mul(pows_lst[state_stack.len()]).unwrap();
+				ans = ans.checked_sub(x).unwrap_or_else(|| ans + module - x);
+				ans = ans.checked_rem_euclid(module).unwrap();
 			}
 			3 => {
-				let (pre_start, pre_stop, printed_ans, pre_ans) = ans;
-				if pre_start == start && pre_stop == stop{
-					println!("{}", printed_ans);
-					continue;
-				}
-				let mut ans_up = pre_ans;
-				if pre_start != start{
-					ans_up %= 10_i32.pow((pre_stop - start) as u32);
-				}
-				ans_up *= 10_i32.pow((stop - pre_stop) as u32);
-				let mut ans_down = 0;
-				let mut count = 1;
-				// O(stop - pre_stop) means O(q) in total
-				for i in (pre_stop..stop).rev(){
-					ans_down += state_stack[i] * count;
-					count *= 10;
-				}
-				let true_ans = ans_up + ans_down as i32;
-				ans = (start, stop, true_ans, true_ans % module);
-				println!("{}", ans.3);
+				println!("{}", ans);
+				continue;
 			}
 			_ => {
 				panic!("invalid order");

@@ -8,7 +8,7 @@ use std::collections::VecDeque;
 // O(q) 
 fn main() {
 	let module = 998244353;
-	let overflow_limit = 200000;
+	let overflow_limit = 998244;
 	let mut pows_lst = vec![1];
 	for _ in 0..overflow_limit{
 		let last = *pows_lst.last().unwrap() as isize;
