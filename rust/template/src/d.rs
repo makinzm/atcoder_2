@@ -2,56 +2,68 @@
 use proconio::{
     fastout, input
 };
-use std::collections::VecDeque;
-use itertools::Itertools;
+use std::cmp::max;
 
-trait Factorial {
-	fn factorial(self) -> Self;
-}
-impl Factorial for usize {
-	fn factorial(self) -> Self {
-		(1..=self).product()
+/// Full Search by DFS
+/// 
+/// `a` means adjacency list
+/// `pairs` means pairs of vertexes
+/// `visited` means whether vertex is visited or not
+/// 
+/// Returns the maximum value among all possible combinations that can be considered after pairs is passed.
+/// 
+/// # Warning
+/// The variable `first` is the minimum value in unvisited vertexes i.e. fixed vertex given by `pairs` and `visited`.
+/// However, the variable `second` is not fixed vertex given by `pairs` and `visited`.
+/// 
+/// The changes of `pairs` and `visited` are reflected in the caller of `dfs` because of passing by reference.
+/// Therefore, we don't need to return `pairs` and `visited`.
+fn dfs(a: &Vec<Vec<usize>>, pairs: &mut Vec<(usize, usize)>, visited: &mut Vec<bool>) -> usize {
+	let mut max_value = 0;
+	if visited.iter().all(|&x| x) {
+		for pair in pairs.iter() {
+			max_value ^= a[pair.0][pair.1 - pair.0 - 1];
+		}
+		return max_value;
 	}
+	let mut first = 200;
+	for i in 0..visited.len() {
+		if !visited[i] {
+			first = i;
+			break;
+		}
+	}
+	visited[first] = true;
+	for second in first + 1..visited.len() {
+		if !visited[second] {
+			visited[second] = true;
+			pairs.push((first, second));
+			max_value = max(max_value, dfs(a, pairs, visited));
+			pairs.pop();
+			visited[second] = false;
+		}
+	}
+	visited[first] = false;
+	max_value
 }
 
 fn main() {
 	input! {
 		n: usize,
 	}
-	let mut a = VecDeque::new();
+	let mut a = Vec::new();
 	for i in 0..2*n - 1 {
-		let mut a_i = VecDeque::new();
+		let mut a_i = Vec::new();
 		for _ in 0..2*n - i - 1 {
 			input! {
 				tmp: usize,
 			}
-			a_i.push_back(tmp);
+			a_i.push(tmp);
 		}
-		a.push_back(a_i);
+		a.push(a_i);
 	}
-	// Number of pattterns is (2n)! / (2^n * n!)
-	// Just in case, add 100
-	let num_of_patterns = 1000000 + ((2*n).factorial()).div_euclid(2usize.pow(n as u32) * (n.factorial()));
 
-	let mut ans = 0;
-	let mut count = 0;
-	for perm in (0..2*n).permutations(2*n as usize) {
-		count += 1;
-		if count > num_of_patterns {
-			break;
-		}
-		let mut sum = 0;
-		for j in (0..2*n).step_by(2) {
-			let mut first = perm[j];
-			let mut second = perm[j + 1];
-			if first > second {
-				let tmp = first;
-				first = second;
-				second = tmp;
-			}
-			sum ^= a[first][second - first - 1];
-		}
-		ans = std::cmp::max(ans, sum);
-	}
-	println!("{}", ans);
+	let mut pairs = Vec::new();
+	let mut visited = vec![false; 2*n];
+	println!("{}", dfs(&a, &mut pairs, &mut visited));
 }
