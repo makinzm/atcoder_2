@@ -33,11 +33,5 @@ int main() {
     long long int n;
     cin >> n;
     long long int n5 = create_quinary(n-1);
-    int n5_len = 0;
-    long long int tmp = n5;
-    while (tmp > 0) {
-        n5_len++;
-        tmp /= 10;
-    }
     cout << n5 * 2 << endl;
 }
