@@ -7,6 +7,8 @@ visited_matrix = [[[[False for _ in range(n)] for _ in range(n)] for _ in range(
 for i in range(n):
     s_list.append(input())
 
+print("Pasted!")
+
 for i in range(n):
     if "P" in s_list[i]:
         s_list[i] = s_list[i].replace("P", "Q", 1)
