@@ -3,25 +3,8 @@ use proconio::{
     fastout, input
 };
 use std::cmp::min;
-use std::collections::BinaryHeap;
 use num::checked_pow;
-use std::cmp::Ordering;
-
-#[derive(Debug, Eq, PartialEq)]
-struct CustomType([isize; 5]);
-
-impl Ord for CustomType {
-    fn cmp(&self, other: &Self) -> Ordering {
-        self.0[4].cmp(&other.0[4])
-    }
-}
-
-impl PartialOrd for CustomType {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
+use std::collections::VecDeque;
 
 #[fastout]
 fn main() {
@@ -31,7 +14,7 @@ fn main() {
 	}
 
 	let mut s_list = s_list;
-	let mut visited_list = vec![];
+	let mut visited_matrix = vec![vec![vec![vec![false; n]; n]; n]; n];
 
 	for i in 0..n {
 		if s_list[i].contains("P") {
@@ -58,15 +41,15 @@ fn main() {
 		}
 	}
 
-	let mut binary_heap = BinaryHeap::<CustomType>::new();
-	binary_heap.push(CustomType([p_x, p_y, q_x, q_y, 0]));
-	visited_list.push((p_x, p_y, q_x, q_y));
+	let mut binary_heap = VecDeque::new();
+	binary_heap.push_back([p_x, p_y, q_x, q_y, 0]);
 
 	let mut ans_count = checked_pow(2, 30).unwrap();
+	visited_matrix[p_x as usize][p_y as usize][q_x as usize][q_y as usize] = true;
 
 	while binary_heap.len() > 0 {
-		let CustomType([p_x, p_y, q_x, q_y, minus_count]) = binary_heap.pop().unwrap();
-		println!("{:?}", [p_x, p_y, q_x, q_y, minus_count]);
+		let [p_x, p_y, q_x, q_y, minus_count] = binary_heap.pop_front().unwrap();
+		// println!("{:?}", [p_x, p_y, q_x, q_y, minus_count]);
 		let count = - minus_count + 1;
 		if count >= ans_count {
 			continue;
@@ -93,11 +76,11 @@ fn main() {
 			if new_p_x == new_q_x && new_p_y == new_q_y {
 				ans_count = min(ans_count, count);
 			} 
-			if visited_list.contains(&(new_p_x, new_p_y, new_q_x, new_q_y)) {
+			if visited_matrix[new_p_x as usize][new_p_y as usize][new_q_x as usize][new_q_y as usize] {
 				continue;
 			}
-			visited_list.push((new_p_x, new_p_y, new_q_x, new_q_y));
-			binary_heap.push(CustomType([new_p_x, new_p_y, new_q_x, new_q_y, -count]));
+			visited_matrix[new_p_x as usize][new_p_y as usize][new_q_x as usize][new_q_y as usize] = true;
+			binary_heap.push_back([new_p_x, new_p_y, new_q_x, new_q_y, -count]);
 		}
 	}
 
