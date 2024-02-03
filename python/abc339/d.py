@@ -7,8 +7,6 @@ visited_matrix = [[[[False for _ in range(n)] for _ in range(n)] for _ in range(
 for i in range(n):
     s_list.append(input())
 
-print("Pasted!")
-
 for i in range(n):
     if "P" in s_list[i]:
         s_list[i] = s_list[i].replace("P", "Q", 1)
@@ -31,8 +29,6 @@ while len(queue) > 0:
     count += 1
     if count >= ans_count:
         continue
-    if visited_matrix[P_x][P_y][Q_x][Q_y]:
-        continue
     visited_matrix[P_x][P_y][Q_x][Q_y] = True
     for i in range(4):
         new_P_x = P_x + [-1, 0, 1, 0][i]
@@ -50,6 +46,7 @@ while len(queue) > 0:
         if new_P_x == new_Q_x and new_P_y == new_Q_y:
             ans_count = min(ans_count, count)
         else:
-            queue.append((new_P_x, new_P_y, new_Q_x, new_Q_y, count))
+            if not visited_matrix[new_P_x][new_P_y][new_Q_x][new_Q_y]:
+                queue.append((new_P_x, new_P_y, new_Q_x, new_Q_y, count))
 
 print(ans_count if ans_count != 2 ** 31 - 1 else -1)
