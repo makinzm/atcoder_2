@@ -1,6 +1,8 @@
+from collections import deque
+
 n = int(input())
 s_list = []
-visited_list = []
+visited_matrix = [[[[False for _ in range(n)] for _ in range(n)] for _ in range(n)] for _ in range(n)]
 
 for i in range(n):
     s_list.append(input())
@@ -19,17 +21,17 @@ for i in range(n):
             Q_x = i
             Q_y = j
 
-queue = [(P_x, P_y, Q_x, Q_y, 0)]
+queue = deque([(P_x, P_y, Q_x, Q_y, 0)])
 ans_count = 2 ** 31 - 1
 
 while len(queue) > 0:
-    P_x, P_y, Q_x, Q_y, count = queue.pop(0)
+    P_x, P_y, Q_x, Q_y, count = queue.popleft()
     count += 1
     if count >= ans_count:
         continue
-    if (P_x, P_y, Q_x, Q_y) in visited_list:
+    if visited_matrix[P_x][P_y][Q_x][Q_y]:
         continue
-    visited_list.append((P_x, P_y, Q_x, Q_y))
+    visited_matrix[P_x][P_y][Q_x][Q_y] = True
     for i in range(4):
         new_P_x = P_x + [-1, 0, 1, 0][i]
         new_P_y = P_y + [0, 1, 0, -1][i]
