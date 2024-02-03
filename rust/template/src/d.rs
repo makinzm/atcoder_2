@@ -18,15 +18,15 @@ fn main() {
 
 	for i in 0..n {
 		if s_list[i].contains("P") {
-			s_list[i] = s_list[i].replace("P", "Q");
+			s_list[i] = s_list[i].replacen("P", "Q", 1);
 			break;
 		}
 	}
 
-	let mut p_x = 0 as isize;
-	let mut p_y = 0 as isize;
-	let mut q_x = 0 as isize;
-	let mut q_y = 0 as isize;
+	let mut p_x = -1;
+	let mut p_y = -1;
+	let mut q_x = -1;
+	let mut q_y = -1;
 
 	for i in 0..n {
 		for j in 0..n {
