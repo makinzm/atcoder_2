@@ -19,7 +19,7 @@ int main() {
     long long int b;
     cin >> a >> b;
     long long int x, y;
-    long long int d = extGCD(b, a, x, y);
+    long long int d = extGCD(-b, a, x, y);
     if (2 % d != 0) {
         cout << -1 << endl;
         return 0;
