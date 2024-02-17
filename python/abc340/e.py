@@ -45,4 +45,3 @@ class LazySegmentTree:
             self.data[self.size//2+i] = v[i]
         for i in range(self.size//2-1, 0, -1):
             self.data[i] = self.op(self.data[i*2], self.data[i*2+1])
-
