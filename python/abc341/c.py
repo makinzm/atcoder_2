@@ -19,17 +19,16 @@ ans = 0
 
 for i in range(h):
     for j in range(w):
-        i_0, j_0 = i, j
         next_i, next_j = i, j
+        ok = 1
         if s[i*w+j] == ".":
             for n_step in range(n):
-                next_i += directories[n_step][1]
-                next_j += directories[n_step][0]
-                if next_i < 0 or next_i >= h or next_j < 0 or next_j >= w:
+                move = directories[n_step]
+                next_i += move[1]
+                next_j += move[0]
+                if not (0 <= next_i < h and 0 <= next_j < w) or s[next_i*w+next_j] == "#":
+                    ok = 0
                     break
-                if s[next_i*w+next_j] == "#":
-                    break
-            if n_step == n-1:
-                ans += 1
+            ans += ok
 
 print(ans)
