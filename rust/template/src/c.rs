@@ -26,19 +26,22 @@ fn main() {
 		for j in 0..w {
 			let mut next_i: isize = i as isize;
 			let mut next_j: isize = j as isize;
+			let mut ok = true;
 			if s[i][j] == land_mark {
 				for n_step in 0..n {
 					next_i += directory_map[&t[n_step]].1;
 					next_j += directory_map[&t[n_step]].0;
 					if next_i >= h as isize || next_j >= w as isize || next_i < 0 || next_j < 0 {
+						ok = false;
 						break;
 					}
 					if s[next_i as usize][next_j as usize] == sea_mark {
+						ok = false;
 						break;
 					}
-					if n_step == n-1 {
-						ans += 1;
-					}
+				}
+				if ok {
+					ans += 1;
 				}
 			}
 		}
