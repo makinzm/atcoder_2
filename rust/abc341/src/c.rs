@@ -22,6 +22,10 @@ fn main() {
 	directory_map.insert('R', (1, 0));
 	directory_map.insert('U', (0, -1));
 	directory_map.insert('D', (0, 1));
+	let mut directories: Vec<(isize,isize)> = vec![];
+	for i in 0..n {
+		directories.push(directory_map.get(&t[i]).unwrap().clone());
+	}
 	for i in 0..h {
 		for j in 0..w {
 			let mut next_i: isize = i as isize;
@@ -29,8 +33,8 @@ fn main() {
 			let mut ok = true;
 			if s[i][j] == land_mark {
 				for n_step in 0..n {
-					next_i += directory_map[&t[n_step]].1;
-					next_j += directory_map[&t[n_step]].0;
+					next_i += directories[n_step].1;
+					next_j += directories[n_step].0;
 					if next_i >= h as isize || next_j >= w as isize || next_i < 0 || next_j < 0 {
 						ok = false;
 						break;
