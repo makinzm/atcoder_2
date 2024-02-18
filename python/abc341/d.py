@@ -1,6 +1,10 @@
-# from math import lcm
+n,m,k = map(int, input().split())
+
+MAX_ANS = n * m * k + 1
+MIN_ANS_LESS = 0
 
 def gcd(x, y):
+    """Return the greatest common divisor of x and y."""
     if x < y:
         x, y = y, x
     if y == 0:
@@ -9,48 +13,21 @@ def gcd(x, y):
         return gcd(y, x % y)
 
 def lcm(x, y):
+    """Return the least common multiple of x and y."""
     return (x * y) // gcd(x, y)
 
+def solve(a):
+    """Return the number which a include this constraint."""
+    num_n = a // n
+    num_m = a // m
+    num_nm = a // lcm(n, m)
+    return num_n + num_m - 2 * num_nm
 
-n,m,k = map(int, input().split())
-
-if n > m:
-    n, m = m, n
-
-lcm_nm = lcm(n, m)
-what_n = lcm_nm // n - 1
-what_m = lcm_nm // m - 1
-what = what_n + what_m
-
-turn = k // what
-min_turn = k % what
-
-base_ans = turn * lcm_nm
-current_n = base_ans
-current_n_index = 0
-current_m = base_ans
-current_m_index = 0
-
-ans_n = True
-
-if min_turn == 0:
-    print(base_ans - min(n, m))
-else:
-    for i in range(min_turn):
-        if current_n == current_m:
-            current_n += n
-            current_n_index += 1
-            ans_n = True
-        else:
-            if current_n + n < current_m + m:
-                current_n += n
-                current_n_index += 1
-                ans_n = True
-            else:
-                current_m += m
-                current_m_index += 1
-                ans_n = False
-    if ans_n:
-        print(base_ans + current_n_index * n)
+while MAX_ANS - MIN_ANS_LESS > 1:
+    mid = (MAX_ANS + MIN_ANS_LESS) // 2
+    if solve(mid) >= k:
+        MAX_ANS = mid
     else:
-        print(base_ans + current_m_index * m)
+        MIN_ANS_LESS = mid
+
+print(MAX_ANS)
