@@ -8,5 +8,7 @@
 
 -e file:.
 lizard==1.17.10
+llvmlite==0.42.0
+numba==0.59.0
 numpy==1.26.2
 ruff==0.1.6
