@@ -1,8 +1,7 @@
-debug =True
+debug = False
 
 from collections import deque
 from copy import deepcopy
-from re import T
 
 n,h,w = map(int,input().split())
 
@@ -12,16 +11,17 @@ for _ in range(n):
     a,b = map(int,input().split())
     boxes.append((a,b))
 
-q: list[int,list[str],int] = deque()
+q = deque()
 
 initial_index = -1
 initial_state = list("." * w * h)
 initial_place = 0
 q.append((initial_index,initial_state,initial_place))
 
-def update_state(state:str, y:int, x: int, place: int) -> tuple[str, int]:
+def update_state(state:str, y:int, x: int, place: int):
     """
     stateに対して,縦y,横xの箱をplaceから置いたときの次の状態を返す
+    (str, int)
     """
     if debug:
         print("try to update_state")
@@ -44,26 +44,17 @@ def update_state(state:str, y:int, x: int, place: int) -> tuple[str, int]:
                 return state, -1
             next_state[(current_y + i) * w + (current_x + j)] = "#"
     
-    # xの探索が全て完了した場合、左上で探索していない場所を返す    
-    if next_x == w - 1:
-        for i in range(h):
-            for j in range(w):
-                if next_state[i * w + j] == ".":
-                    if debug:
-                        print(f"next_place: {i * w + j}, i: {i}, j: {j}")
-                        print("-----")
-                        print(f"next_state: {next_state}")
-                    return next_state, i * w + j
+    for i in range(h):
+        for j in range(w):
+            if next_state[i * w + j] == ".":
+                if debug:
+                    print(f"next_place: {i * w + j}, i: {i}, j: {j}")
+                    print("-----")
+                    print(f"next_state: {next_state}")
+                return next_state, i * w + j
         return next_state, h * w
-    else:
-        next_place = current_y * w + next_x
-        if debug:
-            print(f"next_place: {next_place}, i: {next_x}, j: {current_y}")
-            print("-----")
-            print(f"next_state(2): {next_state}")
-        return next_state, next_place
 
-def check_all_used(state: list[str]) -> bool:
+def check_all_used(state) -> bool:
     return all([s == "#" for s in state])
 
 count = 0
