@@ -11,6 +11,7 @@ dependencies = [
     "lizard>=1.17.10",
     "numba>=0.58.1",
     "mypy>=1.9.0",
+    "pylyzer>=0.0.51",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
