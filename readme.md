@@ -6,6 +6,9 @@ If you struggle finding the answer, the following sites may help you:
 
 - AtCoder のテストケース : https://atcoder.jp/posts/20
 - AtCoder Comparisons : https://atcoder-companions.kakira.dev/
+- [AtCoderRatingContributorGraph](https://atcoder-rating-contribution-graph.vercel.app/)
+- [レーティングのしくみ - AtCoderInfo](https://info.atcoder.jp/overview/contest/rating)
+- [AtCoder Rating Simulator](https://atcoder-rating-simulator.dt.r.appspot.com/)
 
 ---
 
