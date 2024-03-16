@@ -11,4 +11,10 @@ ans = 0
 for c in s:
     ans += n - count_dict[c] 
 
-print(ans//2 if len(count_dict) >= 2 else 1)
+include_me = 0
+for key in count_dict.keys():
+    if count_dict[key] > 1:
+        include_me = 1
+        break
+
+print(ans//2 + include_me)
