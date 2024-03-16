@@ -1,5 +1,3 @@
-import itertools
-
 s = input()
 
 count_dict = {}
@@ -7,9 +5,10 @@ count_dict = {}
 for c in s:
     count_dict[c] = count_dict.get(c, 0) + 1
 
+n = len(s)
 ans = 0
 
-for combi in itertools.combinations(count_dict.keys(), 2):
-    ans += count_dict[combi[0]] * count_dict[combi[1]]
+for c in s:
+    ans += n - count_dict[c] 
 
-print(ans if len(count_dict) >= 2 else 1)
+print(ans//2 if len(count_dict) >= 2 else 1)
