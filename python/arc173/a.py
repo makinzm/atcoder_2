@@ -1,29 +1,65 @@
-MAX_NUM = 10 ** 20
+from inspect import stack
 
-def _get_num_neq(x):
-    """Get the number of Neq Numbers which is equal to or less than x."""
+
+MAX_NUM = 10 ** 20
+debug = True
+
+def _calculate_stacked_value(
+        stacked_value,
+        previous_base,
+        current_digit,
+        next_digit
+    ):
+    """自明的に 9 通りの数が選べない場合の合計数を計算する助けをする"""
+    # 次の文字が現在の文字より小さい場合
+    if next_digit != current_digit:
+        if next_digit < current_digit:
+            # [0:current_digit] \ [next_digit] の数
+            stacked_value = stacked_value + (current_digit - 1) * previous_base
+        else:
+            stacked_value = stacked_value + current_digit * previous_base
+    else:
+        # [0:current_value) の数だけ自由に動ける (next_digit == current_digit であるため)
+        stacked_value = current_digit * previous_base
+    return stacked_value
+
+def _get_same_digits_neq_number(x):
+    """Get the number of Neq Number that has the same digits as x and less than or equal to x"""
     num_of_digits = len(str(x))
     
     current_digit = x % 10
     next_digit = (x // 10) % 10
-    ans = 0
+    # 自由に選べる場合の基数
+    previous_base = 1
+    # 自由に選べない場合の合計数 (初期値は x が選べると仮定した際の1通り)
+    stacked_value = 1
     for i in range(num_of_digits):
-        # 次の桁が現状の桁の候補に入る場合は、少なくカウントする
-        # また、最高桁の場合は次の桁が0のため、少なくカウントされることがこの条件に含まれている
-        # また、0が連続している場合はカウントとして current_digit が 0であるため増加しない
-        if current_digit >= next_digit:
-            ans += current_digit * (9 ** i)
-        else:
-            ans += (current_digit + 1) * (9 ** i)
-        
+        stacked_value = _calculate_stacked_value(
+            stacked_value,
+            previous_base,
+            current_digit,
+            next_digit
+        )
         x //= 10
         current_digit = x % 10
         next_digit = (x // 10) % 10
+        previous_base *= 9
+    return stacked_value
+
+def _get_less_digits_neq_number(x):
+    """Get the number of Neq Number that has less digits than x"""
+    num_of_digits = len(str(x))
+    ans = 0
+    for i in range(1, num_of_digits):
+        ans += 9 ** i
     return ans
 
-max_k = _get_num_neq(MAX_NUM)
-debug = False
-if debug:
+def _get_num_neq(x):
+    """Get the number of Neq Number that is less than or equal to x"""
+    return _get_same_digits_neq_number(x) + _get_less_digits_neq_number(x)
+
+if False:
+    max_k = _get_num_neq(MAX_NUM)
     print(max_k)
     print("OK" if max_k > 10 ** 12 else "NG")
 
