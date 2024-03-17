@@ -1,4 +1,4 @@
-max_num = 10 ** 12
+MAX_NUM = 10 ** 20
 
 def _get_num_neq(x):
     """Get the number of Neq Numbers which is equal to or less than x."""
@@ -21,12 +21,18 @@ def _get_num_neq(x):
         next_digit = (x // 10) % 10
     return ans
 
+max_k = _get_num_neq(MAX_NUM)
+debug = False
+if debug:
+    print(max_k)
+    print("OK" if max_k > 10 ** 12 else "NG")
+
 def solve(k):
     """k番目のNeq Numberを求める"""
     # out
     min_num = 0
     # safe
-    max_num = 10 ** 12
+    max_num = MAX_NUM
     while max_num - min_num > 1:
         mid = (max_num + min_num) // 2
         num_neq_of_mid = _get_num_neq(mid)
