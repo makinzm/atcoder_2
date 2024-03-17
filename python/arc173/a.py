@@ -1,34 +1,48 @@
-t = int(input())
+max_num = 10 ** 12
 
-cases = []
-for _ in range(t):
-    case_i = int(input())
-    cases.append(case_i)
+def _get_num_neq(x):
+    """Get the number of Neq Numbers which is equal to or less than x."""
+    num_of_digits = len(str(x))
+    
+    current_digit = x % 10
+    next_digit = (x // 10) % 10
+    ans = 0
+    for i in range(num_of_digits):
+        # 次の桁が現状の桁の候補に入る場合は、少なくカウントする
+        # また、最高桁の場合は次の桁が0のため、少なくカウントされることがこの条件に含まれている
+        # また、0が連続している場合はカウントとして current_digit が 0であるため増加しない
+        if current_digit >= next_digit:
+            ans += current_digit * (9 ** i)
+        else:
+            ans += (current_digit + 1) * (9 ** i)
+        
+        x //= 10
+        current_digit = x % 10
+        next_digit = (x // 10) % 10
+    return ans
 
-def whether_neq(n: int):
-    """
-    return whether n is Neq Number
-    """
-    n_seq = list(str(n))
-    previous = n_seq[0]
-    for i in range(1, len(n_seq)):
-        if n_seq[i] == previous:
-            return False
-        previous = n_seq[i]
-    return True
+def solve(k):
+    """k番目のNeq Numberを求める"""
+    # out
+    min_num = 0
+    # safe
+    max_num = 10 ** 12
+    while max_num - min_num > 1:
+        mid = (max_num + min_num) // 2
+        num_neq_of_mid = _get_num_neq(mid)
+        if num_neq_of_mid >= k:
+            max_num = mid
+        else:
+            min_num = mid
 
-"""
-This problem is too difficult for me to solve.
+    return max_num
 
-So, I will list candidates of the answer which I know.
-
-- DP: I think this problem doesn't have any state, so DP is not suitable.
-- DFS, BFS: I think this problem doesn't have any graph structure, so DFS, BFS is not suitable.
-- Greedy: This order is 10^12 >> 10^7, so I think greedy is not suitable.
-- Math: There may be some mathematical properties of Neq Numbers but I can't find it.
-- Segment Tree: I think this problem doesn't have any range query, so Segment Tree is not suitable.
-- Binary Search: I need to find the mathematical properties of Neq Numbers to use Binary Search, so I can't use it.
-- Bipartite, Flow, Matching: I think this problem doesn't have any graph structure, so these are not suitable.
-
-"""
-
+if __name__ == "__main__":
+    t = int(input())
+    cases = []
+    for _ in range(t):
+        case_i = int(input())
+        cases.append(case_i)
+    
+    for case in cases:
+        print(solve(case))

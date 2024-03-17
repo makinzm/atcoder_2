@@ -7,12 +7,16 @@
 #   all-features: false
 
 -e file:.
+iniconfig==2.0.0
 lizard==1.17.10
 llvmlite==0.42.0
 mypy==1.9.0
 mypy-extensions==1.0.0
 numba==0.59.0
 numpy==1.26.2
+packaging==24.0
+pluggy==1.4.0
 pylyzer==0.0.51
+pytest==8.1.1
 ruff==0.1.6
 typing-extensions==4.10.0
