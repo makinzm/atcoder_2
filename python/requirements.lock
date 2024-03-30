@@ -43,3 +43,4 @@ typing-extensions==4.10.0
     # via mypy
     # via pydantic
     # via pydantic-core
+    # via python
