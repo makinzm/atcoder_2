@@ -1,65 +1,90 @@
-from copy import deepcopy
+# Reference: https://atcoder.jp/contests/abc351/submissions/52863630
 
-h, w = list(map(int,input().split()))
-s = []
-for i in range(h):
-    s.append(input())
+from collections import deque
 
-visited = [[False for _ in range(w)] for _ in range(h)]
-stuck = [[False for _ in range(w)] for _ in range(h)]
+h,w = map(int, input().split())
+s = [input() for _ in range(h)]
 
-for i in range(h):
-    for j in range(w):
-        if s[i][j] == "#":
-            visited[i][j] = True
+# 0 means liberty when DFS
+# -1 means wall or not started point when DFS
+# i which is greater than 0 means stuck, 
+#   whose value is the DFS iteration id started from 2 (initial value is 1)
+matrix = [0 for i_j in range(h*w)]
 
-init_visited = deepcopy(visited)
+directions = ((0,1), (1,0), (0,-1), (-1,0))
 
-directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
-
-def is_over(x, y):
-    return x < 0 or x >= h or y < 0 or y >= w
-
-def dfs(x, y):
-    """
-    Solve the degree of freedom of (x, y) in the grid.
-    if answer is 1, it means this point is stuck.
-    """
-    if visited[x][y]:
-        return -1
-    visited[x][y] = True
-    if stuck[x][y]:
-        return 1
-    is_stuck = False
-    for dx, dy in directions:
-        nx, ny = x + dx, y + dy
-        if is_over(nx, ny):
-            continue
-        if s[nx][ny] == "#":
-            is_stuck = True
-            break
-    if is_stuck:
-        stuck[x][y] = True
-        return 1
-    else:
-        next_all = 0
-        for dx, dy in directions:
-            nx, ny = x + dx, y + dy
-            if is_over(nx, ny):
-                continue
-            next_ans = dfs(nx, ny)
-            if next_ans != -1:
-                next_all += next_ans
-        return next_all + 1 # contain itself
-                
+def is_over(i, j):
+    return i < 0 or i >= h or j < 0 or j >= w
 
 ans = 0
+
 for i in range(h):
     for j in range(w):
-        if init_visited[i][j]:
-            continue
-        visited = deepcopy(init_visited)
-        ans_candidate = dfs(i, j)
-        if ans_candidate != -1:
-            ans = max(ans, ans_candidate)
+        if s[i][j] == '#':
+            matrix[i*w+j] = -1
+            for dir in directions:
+                ni = i+dir[0]
+                nj = j+dir[1]
+                # Check stuck point
+                if not is_over(ni, nj) and matrix[ni*w + nj] == 0:
+                    matrix[ni*w + nj] = 1
+
+iteration_id = 2
+
+def dfs(i, j) -> int:
+    global iteration_id
+
+    ans = 0
+    # Starting point is a wall or an already checked point
+    if matrix[i*w+j] == -1:
+        return ans
+    # Starting point is a stuck point
+    if matrix[i*w+j] > 0:
+        ans += 1
+        return ans
+    
+    q = deque()
+
+    def act_for_new_liberty(x, y) -> None:
+        """
+        Act for new liberty point.
+        1. Mark this point in-available from available liberty point
+        2. Increment count
+        3. Append this point to the queue
+        """
+        nonlocal ans        
+        # This point is already checked in this DFS,
+        # so we don't have to start from this point
+        matrix[x*w+y] = -1
+        # This point is liberty point, so increment count
+        ans += 1
+        q.append((x, y))
+    
+    def partial_dfs(x, y) -> None:
+        nonlocal ans
+        for dir in directions:
+            nx = x + dir[0]
+            ny = y + dir[1]
+            if is_over(nx, ny):
+                continue
+            # Available liberty point
+            if matrix[nx*w+ny] == 0:
+                act_for_new_liberty(nx, ny)
+            # Available stuck point
+            elif matrix[nx*w+ny] != -1 and matrix[nx*w+ny] != iteration_id:
+                matrix[nx*w+ny] = iteration_id
+                ans += 1
+    
+    act_for_new_liberty(i, j)
+    while len(q) > 0:
+        x, y = q.popleft()
+        partial_dfs(x, y)
+    return ans
+
+for i in range(h):
+    for j in range(w):
+        localized_ans = dfs(i, j)
+        ans = max(ans, localized_ans)
+        iteration_id += 1
+
 print(ans)
