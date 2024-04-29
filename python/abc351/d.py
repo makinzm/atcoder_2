@@ -1,4 +1,6 @@
-# Reference: https://atcoder.jp/contests/abc351/submissions/52863630
+# Reference: 
+# riened, 2024-04-27, AtCoder, accessed 2024-04-28
+# https://atcoder.jp/contests/abc351/submissions/52863630
 
 from collections import deque
 
