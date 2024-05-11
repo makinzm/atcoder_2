@@ -9,12 +9,21 @@ dependencies = [
     "numpy>=1.24.4",
     "ruff>=0.1.6",
     "lizard>=1.17.10",
-    "numba>=0.58.1",
+    "numba>=0.59.1",
     "mypy>=1.9.0",
     "pylyzer>=0.0.51",
     "pytest>=8.1.1",
     "pydantic>=2.6.4",
     "typing-extensions>=4.10.0",
+    "scipy>=1.13.0",
+    "networkx>=3.3",
+    "sympy>=1.12",
+    "sortedcontainers>=2.4.0",
+    "more-itertools>=10.2.0",
+    "shapely>=2.0.4",
+    "bitarray>=2.9.2",
+    "pandas>=2.2.2",
+    "pulp>=2.8.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
