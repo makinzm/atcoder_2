@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(10**8)
+
 n = int(input())
 s = input().split(' ')
 
