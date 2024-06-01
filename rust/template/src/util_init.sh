@@ -13,5 +13,11 @@ if [ ! -d "$directory" ]; then
   mkdir -p "$directory/src"
   echo "Created directory: $directory"
 else
-  echo "Directory already exists: $directory"
+  if [ ! -d "$directory/src" ]; then
+    mkdir -p "$directory/src"
+    echo "Created directory: $directory/src"
+  else
+    echo "Directory already exists: $directory/src"
+  fi
 fi
+

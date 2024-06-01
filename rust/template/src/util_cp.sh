@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 # Copyするための関数.
 
@@ -15,7 +15,7 @@ if [[ $# -lt 2 ]]; then
   exit 1
 fi
 
-sh util_init.sh $2
+bash util_init.sh $2
 
 cp $1 ../../$2/src/$1
 git add ../../$2/src/$1
