@@ -1,8 +1,8 @@
 [package]
-name = "-"
+name = "makinzm-atcoder"
 version = "0.1.0"
 authors = ["makinzm"]
-edition = "2018"
+edition = "2021"
 
 # [dependencies]の箇所につきましては,`Copyright (c) 2019 rust-lang-ja`でMIT Licenseです.
 # https://github.com/rust-lang-ja/atcoder-rust-base/blob/9a6d858db7899c70570bdf5dc3fadcce541988d0/Cargo.toml
@@ -36,14 +36,6 @@ path = "src/f.rs"
 [[bin]]
 name = "g"
 path = "src/g.rs"
-
-[[bin]]
-name = "parallel"
-path = "src/parallel.rs"
-
-[[bin]]
-name = "not_parallel"
-path = "src/not_parallel.rs"
 
 [dependencies]
 
