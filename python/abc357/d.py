@@ -1,4 +1,3 @@
-import math
 N = int(input())
 MOD = 998244353
 
@@ -11,7 +10,7 @@ def f(n, i):
     if (n, i) in memo:
         return memo[(n, i)]
 
-    k = int(math.log10(n)) + 1
+    k = len(str(n))
     if i % 2 == 0:
         left_side = f(n, i // 2)
         left_base = pow(10, k * (i // 2), MOD)
