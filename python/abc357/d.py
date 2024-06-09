@@ -14,7 +14,7 @@ def f(n, i):
         return (left_side * left_base + right_side) % MOD
     else:
         left_side = f(n, i-1)
-        left_base = 10 ** k
+        left_base = pow(10, k, MOD)
         return (left_side * left_base + n) % MOD
 
 print(f(N, N))
