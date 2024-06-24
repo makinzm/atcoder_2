@@ -2,70 +2,52 @@
 use proconio::{
     fastout, input,
 };
-use std::cmp::{min};
 
 #[fastout]
-fn main(){
-	input!{
-		_n: usize,
-		k: usize,
-		a: [isize; k],
-	};
-	if k < 2{
-		println!("{}",0);
-		return;
-	}
-	/*
-	Basically, it is ok to only think about k because complete pair loss become 0 and it is best.
-	If k is odd, there is one sock which is not paired.
-	*/
-	let mut _sum_diff_all = 0;
-	let mut sum_diff_odd = 0;
-	let mut sum_diff_even = 0;
-	for i in 0..k-1{
-		_sum_diff_all += (a[i] - a[i+1]).abs();
-		if i % 2 == 0{
-			sum_diff_even += (a[i] - a[i+1]).abs();
-		} else {
-			sum_diff_odd += (a[i] - a[i+1]).abs();
-		}
-	}
-	let mut min_ans = sum_diff_even;
+fn main() {
+	input! {
+        _n: usize,
+        k: usize,
+        a: [usize; k],
+    };
 
-	let mut current_sum_even = 0;
-	let mut current_sum_odd = 0;
-	let mut current_sum_even_last = sum_diff_even;
-	let mut current_sum_odd_last = sum_diff_odd;
-	if k % 2 == 0{
-		println!("{}", min_ans);
-		return;
-	}
-	for i in 0..k{
-		// println!("min_ans {}, current_sum_even {}, current_sum_odd {}, current_sum_even_last {}, current_sum_odd_last {}", min_ans, current_sum_even, current_sum_odd, current_sum_even_last, current_sum_odd_last);
-		if i % 2 == 0{
-			min_ans = min(
-				min_ans,
-				current_sum_odd_last + current_sum_even
-			);
-			if i == k-1{
-				break;
-			}
-			current_sum_even += (a[i] - a[i+1]).abs();
-			current_sum_even_last -= (a[i] - a[i+1]).abs();
-		} else {
-			min_ans = min(
-				min_ans,
-				current_sum_even_last + current_sum_odd
-			);
-			if i == k-1{
-				break;
-			}
-			current_sum_odd += (a[i] - a[i+1]).abs();
-			current_sum_odd_last -= (a[i] - a[i+1]).abs();
-		}
-		// println!("{} {} {} {}", current_sum_even, current_sum_odd, current_sum_even_last, current_sum_odd_last);
-		// println!("{}", min_ans);
-	}
-	
-	println!("{}", min_ans);
+    if k % 2 == 0 {
+        let mut ans = 0;
+        for i in 0..k {
+            if i % 2 == 0 {
+                ans += a[i].abs_diff(a[i + 1]);
+            }
+        }
+        println!("{}", ans);
+    } else {
+        let mut left = vec![0; k];
+        let mut left_current = 0;
+        for i in 1..k {
+            if i % 2 == 1 {
+                left[i] = left_current;
+            } else {
+                left_current += a[i-1].abs_diff(a[i-2]);
+                left[i] = left_current;
+            }
+        }
+        let mut right = vec![0; k];
+        let mut right_current = 0;
+        for i in (0..k-1).rev() {
+            if i % 2 == 0 {
+                right[i] = right_current;
+            } else {
+                right_current += a[i].abs_diff(a[i+1]);
+                right[i] = right_current;
+            }
+        }
+        let mut ans = std::usize::MAX;
+        for i in 0..k {
+            if i % 2 == 0 {
+                ans = ans.min(left[i] + right[i]);
+            } else {
+                ans = ans.min(left[i] + right[i] + a[i-1].abs_diff(a[i+1]));
+            }
+        }
+        println!("{}", ans);
+    }
 }
