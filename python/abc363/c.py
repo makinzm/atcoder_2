@@ -1,19 +1,19 @@
-from itertools import permutations
+from more_itertools import distinct_permutations
+from numba import jit
 
 num, kaibun_length = map(int, input().split())
 base_string = input()
 
 count = 0
 
-palidoromes_dict = {}
-
+@jit(nopython=True, cache=True)
 def is_palindrome(s):
-    if s in palidoromes_dict:
-        return palidoromes_dict[s]
-    ans =  s == s[::-1]
-    palidoromes_dict[s] = ans
-    return ans
+    for i in range(len(s) // 2):
+        if s[i] != s[-i - 1]:
+            return False
+    return True
 
+@jit(nopython=True)
 def is_k_palindrome(s, k):
     for i in range(num - k + 1):
         if is_palindrome(s[i:i + k]):
@@ -21,7 +21,7 @@ def is_k_palindrome(s, k):
     return False
 
 count = sum(
-    not is_k_palindrome(perm, kaibun_length) for perm in set(permutations(base_string))
+    not is_k_palindrome(perm, kaibun_length) for perm in distinct_permutations(base_string)
 )
 
 print(count)
