@@ -19,17 +19,17 @@ def calc(xs):
 
     # x_i < x を満たす x_i の個数
     i = 0
-    for x in range(-max_x + 1, max_x):
+    for x in range(-max_x + 1, max_x + 1):
         while i < n and sorted_xs[i] < x:
             i += 1
         # x_sum(x) = Sum(|x-xj|) = 1_{0<=j<=i_x} Sum(x-xj) + 1_{i_x<j<n} Sum(xj-x)
         # = 1_{0<=j<=i_x} Sum(x-1 - xj + 1) + 1_{i_x<j<n} Sum(xj - (x+1) + 1)
-        # = 1_{0<=j<=i_x} Sum(x-1 - xj) + 1_{i_x<j<n} Sum(xj - x) + 1_{i_x<j<n} - 1_{0<=j<=i_x}
+        # = 1_{0<=j<=i_x} Sum(x-1 - xj) + 1_{i_x<j<n} Sum(xj - x) - 1_{i_x<j<n} + 1_{0<=j<=i_x}
         # x_sum(x-1)
         # = Sum(|x-1-xj|) = 1_{0<=j<=i_(x-1)} Sum(x-1-xj) + 1_{i_(x-1)<j<n} Sum(xj-x+1)
         # ここで i_(x-1) <= i_x であることに注意して式変形をすると
-        # x_sum(x) - x_sum(x-1) = (x-1 - x_(i_x)) - (x_(i_x) - (x-1)) + 1_{i_x<j<n} - 1_{0<=j<=i_x}
-        # = n - i_x - i_x
+        # x_sum(x) - x_sum(x-1) = (x-1 - x_(i_x)) - (x_(i_x) - (x-1)) - 1_{i_x<j<n} + 1_{0<=j<=i_x}
+        # = - (n - i_x) - i_x
         x_sum[x] = x_sum[x - 1] + i - (n - i)
     return x_sum
 
