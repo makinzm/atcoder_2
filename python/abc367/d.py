@@ -1,34 +1,34 @@
 from collections import defaultdict
 
-def count_valid_paths(n, m, a):
-    cumulative_sum_clockwise = [0] * (2 * n + 1)
-    for i in range(1, 2 * n + 1):
-        cumulative_sum_clockwise[i] = cumulative_sum_clockwise[i - 1] + a[(i - 1) % n]
-    
-    a_reversed = a[::-1]
-    cumulative_sum_counterclockwise = [0] * (2 * n + 1)
-    for i in range(1, 2 * n + 1):
-        cumulative_sum_counterclockwise[i] = cumulative_sum_counterclockwise[i - 1] + a_reversed[(i - 1) % n]
-    
-    def count_paths(cumulative_sum):
-        remainder_count = defaultdict(int)
-        count = 0
-        for i in range(n + 1):
-            remainder = cumulative_sum[i] % m
-            count += remainder_count[remainder]
-            remainder_count[remainder] += 1
-        return count
 
-    count_clockwise = count_paths(cumulative_sum_clockwise)
-    count_counterclockwise = count_paths(cumulative_sum_counterclockwise)
-
-    overcounted_paths = 0
-    for i in range(1, n):
-        if (cumulative_sum_clockwise[i] - cumulative_sum_clockwise[0]) % m == 0:
-            overcounted_paths += 1
-
-    return count_clockwise + count_counterclockwise - overcounted_paths
-
-n, m = map(int, input().split())
+n, m = map(int,input().split())
 a = list(map(int, input().split()))
-print(count_valid_paths(n, m, a))
+
+current_dict = defaultdict(int)
+current_end_mod = 0
+
+for i in range(n):
+    current_end_mod += a[i]
+    current_end_mod %= m
+    current_dict[current_end_mod] += 1
+
+ans = 0
+current_start_mod = 0
+
+for i in range(n):
+    # Exclude self point from (i) to (i + n)
+    current_dict[current_end_mod] -= 1
+    ans += current_dict[current_start_mod]
+    current_dict[current_end_mod] += 1
+    ## Remove point from (i) to (i+1)
+    ## Proceed starting point
+    current_start_mod += a[i]
+    current_start_mod %= m
+    current_dict[current_start_mod] -= 1
+    # Proceed ending point
+    current_end_mod += a[i]
+    current_end_mod %= m
+    current_dict[current_end_mod] += 1
+
+print(ans)
+
