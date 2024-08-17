@@ -28,6 +28,8 @@ mypy-extensions==1.0.0
     # via mypy
 networkx==3.3
     # via python
+nodeenv==1.9.1
+    # via pyright
 numba==0.59.1
     # via python
 numpy==1.26.2
@@ -48,7 +50,7 @@ pydantic==2.6.4
     # via python
 pydantic-core==2.16.3
     # via pydantic
-pylyzer==0.0.51
+pyright==1.1.376
     # via python
 pytest==8.2.1
     # via python
