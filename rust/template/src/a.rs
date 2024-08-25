@@ -10,7 +10,6 @@ fn main() {
         l: usize,
         r: usize,
     }
-    let mut a = Vec::new();
     for i in 1..=l-1 {
         a.push(i);
     }
