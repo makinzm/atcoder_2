@@ -62,8 +62,9 @@ for pos_to in t:
     current_b = [-1 for _ in range(L_B)]
     for u in path:
         if not u in current_b:
-            print("s", L_B, u, 0)
-            current_b = A[u:L_B+u]
+            remain_a = min(L_B, L_A - u)
+            print("s", remain_a, u, 0)
+            current_b = A[u:remain_a+u] + current_b[remain_a:]
         print("#", current_b)
         print("m", u)
 
