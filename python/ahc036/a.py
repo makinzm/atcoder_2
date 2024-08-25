@@ -59,8 +59,11 @@ for pos_to in t:
     dfs(pos_from, -1)
 
     # for every step in the path, control the signal and move
+    current_b = [-1 for _ in range(L_B)]
     for u in path:
-        print("s", 1, u, 0)
+        if not u in current_b:
+            print("s", L_B, u, 0)
+        current_b = A[u:L_B+u]
         print("m", u)
 
     pos_from = pos_to
