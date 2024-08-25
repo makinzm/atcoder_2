@@ -19,14 +19,7 @@ for _ in range(N):
     x, y = map(int, input().split())
     P.append((x, y))
 
-# construct and output the array A
-A = [0] * L_A
-for i in range(L_A):
-    if i < N:
-        A[i] = i
-    else:
-        A[i] = 0
-print(*A)
+all_pathes = []
 
 pos_from = 0
 
@@ -58,14 +51,34 @@ for pos_to in t:
 
     dfs(pos_from, -1)
 
-    # for every step in the path, control the signal and move
-    current_b = [-1 for _ in range(L_B)]
-    for u in path:
-        if not u in current_b:
-            remain_a = min(L_B, L_A - u)
-            print("s", remain_a, u, 0)
-            current_b = A[u:remain_a+u] + current_b[remain_a:]
-        print("#", current_b)
-        print("m", u)
-
+    all_pathes += path
     pos_from = pos_to
+
+# construct and output the array A
+A = [-1 for _ in range(L_A)]
+where_u = {}
+count = 0
+for i, u in enumerate(all_pathes):
+    if not u in where_u:
+        where_u[u] = count
+        A[count] = u
+        count += 1
+if count < L_A:
+    A[count:] = all_pathes[-(L_A - count):]
+
+assert not -1 in A
+
+print("#", all_pathes)
+print(*A)
+
+current_b = [-1 for _ in range(L_B)]
+for next_u in all_pathes:
+    if not next_u in current_b:
+        index_u = where_u[next_u]
+        remain_a = min(L_B, L_A - index_u)
+        print("s", remain_a, index_u, 0)
+        index_u = where_u[next_u]
+        current_b = A[index_u:index_u + remain_a] + current_b[remain_a:]
+    print("#", current_b)
+    print("m", next_u)
+
