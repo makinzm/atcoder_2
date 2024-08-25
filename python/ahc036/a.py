@@ -63,7 +63,7 @@ for pos_to in t:
     for u in path:
         if not u in current_b:
             print("s", L_B, u, 0)
-            # current_b = A[u:L_B+u]
+            current_b = A[u:L_B+u]
         print("#", current_b)
         print("m", u)
 
