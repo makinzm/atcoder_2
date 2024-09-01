@@ -54,7 +54,7 @@ path.append([1,1])
 
 path = path[::-1]
 
-ans = ""
+ans = []
 for i in range(1, len(path)):
     destination = path[i]
     start = path[i-1]
@@ -62,9 +62,9 @@ for i in range(1, len(path)):
     num_down = destination[0] - start[0]
     num_right = destination[1] - start[1]
 
-    ans += "D" * num_down
-    ans += "R" * num_right
+    ans += ["D"] * num_down
+    ans += ["R"] * num_right
 
 print(num_gotten_coin)
-print(ans)
+print("".join(ans))
 
