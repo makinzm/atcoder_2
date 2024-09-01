@@ -1,16 +1,29 @@
-def dist(a, b):
-    return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2
-
-
 # get input
 N, M, T, L_A, L_B = map(int, input().split())
 
 G = [[] for _ in range(N)]
 
+# Warshefloyd
+print("# Warshefloyd")
+cost = [[10**18] * N for _ in range(N)]
+for i in range(N):
+    cost[i][i] = 0
+
 for _ in range(M):
     u, v = map(int, input().split())
     G[u].append(v)
     G[v].append(u)
+    cost[u][v] = min(cost[u][v], 1)
+    cost[v][u] = min(cost[v][u], 1)
+
+print("# Calculate cost")
+
+for k in range(N):
+    for i in range(N):
+        for j in range(N):
+            cost[i][j] = min(cost[i][j], cost[i][k] + cost[k][j])
+
+print("# Calculate cost done")
 
 t = list(map(int, input().split()))
 
@@ -41,7 +54,7 @@ for pos_to in t:
             return True
 
         # visit next city in ascending order of Euclidean distance to the target city
-        for v in sorted(G[cur], key=lambda x: dist(P[x], P[pos_to])):
+        for v in sorted(G[cur], key=lambda x: cost[x][pos_to]):
             if v == prev:
                 continue
             if dfs(v, cur):
