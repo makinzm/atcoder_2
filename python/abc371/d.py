@@ -21,10 +21,7 @@ for _ in range(q):
     right = bisect.bisect_right(xp, (r, 10 ** 10))
 
     if left == right:
-        if l <= xp[left][0] <= r:
-            print(xp[left][1])
-        else:
-            print(0)
+        print(0)
     else:
         print(cum_sum[right] - cum_sum[left])
 
