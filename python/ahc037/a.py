@@ -3,6 +3,14 @@ ab = [tuple(map(int, input().split())) for _ in range(n)]
 
 # Priority queue
 
+def max_distance(s, t, aim):
+    distance_s = abs(s[0] - aim[0]) + abs(s[1] - aim[1])
+    distance_t = abs(t[0] - aim[0]) + abs(t[1] - aim[1])
+    if distance_s > distance_t:
+        return t
+    else:
+        return s
+
 import heapq
 
 pq = []
@@ -20,7 +28,7 @@ while pq:
     prev_dict[(a, b)] = (0, 0)
     for u, v in visited:
         if u < a and v < b:
-            prev_dict[(a, b)] = max(prev_dict[(a, b)], (u, v)) 
+            prev_dict[(a, b)] = max_distance(prev_dict[(a,b)], (u,v), (a,b))
     visited.append((a, b))
 
 pq = []
