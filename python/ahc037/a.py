@@ -1,6 +1,7 @@
 n = int(input())
 ab = [tuple(map(int, input().split())) for _ in range(n)]
 
+num_divided = 3
 # Priority queue
 
 def max_distance(s, t, aim):
@@ -58,8 +59,8 @@ third_added_next_points = defaultdict(list)
 while count <= 4 * n - 2:
     for great_point, next_points in added_next_points.items():
         if len(next_points) > 2:
-            first_group = next_points[:len(next_points) // 2]
-            second_group = next_points[len(next_points) // 2:]
+            first_group = next_points[:len(next_points) // num_divided]
+            second_group = next_points[len(next_points) // num_divided:]
             first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
             second_intermediator = (min(list(map(lambda xy: xy[0], second_group))), min(list(map(lambda xy: xy[1], second_group))))
             visited.append(first_intermediator)
@@ -84,7 +85,6 @@ def next_generation(added_next_points):
         next_generation_added_next_points = defaultdict(list)
         for great_point, next_points in added_next_points.items():
             if len(next_points) > 2:
-                num_divided = 3
                 first_group = next_points[:len(next_points) // num_divided]
                 second_group = next_points[len(next_points) // num_divided:]
                 first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
