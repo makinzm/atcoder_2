@@ -39,12 +39,11 @@ while count < 4 * n:
     for previous_point, next_points in next_dict.items():
         if len(next_points) > 1:
             intermediator = (min(list(map(lambda xy: xy[0], next_points))), min(list(map(lambda xy: xy[1], next_points))))
-            if intermediator not in visited:
-                visited.append(intermediator)
-                for point in next_points:
-                    prev_dict[point] = intermediator
-                prev_dict[intermediator] = previous_point
-                count += 1
+            visited.append(intermediator)
+            for point in next_points:
+                prev_dict[point] = intermediator
+            prev_dict[intermediator] = previous_point
+            count += 1
     break
 
 pq = []
