@@ -53,6 +53,8 @@ while count < 4 * n:
                 break
     break
 
+third_added_next_points = defaultdict(list)
+
 while count <= 4 * n - 2:
     for great_point, next_points in added_next_points.items():
         if len(next_points) > 2:
@@ -64,14 +66,49 @@ while count <= 4 * n - 2:
             visited.append(second_intermediator)
             for point in first_group:
                 prev_dict[point] = first_intermediator
+                third_added_next_points[first_intermediator].append(point)
             prev_dict[first_intermediator] = great_point
             for point in second_group:
                 prev_dict[point] = second_intermediator
+                third_added_next_points[second_intermediator].append(point)
             prev_dict[second_intermediator] = great_point
             count += 2
             if count > 4 * n - 1:
                 break
     break
+
+def next_generation(added_next_points):
+    global count
+    while True:
+        num_updated = 0
+        next_generation_added_next_points = defaultdict(list)
+        for great_point, next_points in added_next_points.items():
+            if len(next_points) > 2:
+                first_group = next_points[:len(next_points) // 2]
+                second_group = next_points[len(next_points) // 2:]
+                first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
+                second_intermediator = (min(list(map(lambda xy: xy[0], second_group))), min(list(map(lambda xy: xy[1], second_group))))
+                visited.append(first_intermediator)
+                visited.append(second_intermediator)
+                for point in first_group:
+                    prev_dict[point] = first_intermediator
+                    next_generation_added_next_points[first_intermediator].append(point)
+                prev_dict[first_intermediator] = great_point
+                for point in second_group:
+                    prev_dict[point] = second_intermediator
+                    next_generation_added_next_points[second_intermediator].append(point)
+                prev_dict[second_intermediator] = great_point
+                count += 2
+                num_updated += 1
+            if count >= 4 * n - 1:
+                break
+        if count >= 4 * n - 1:
+            break
+        if num_updated == 0:
+            break
+
+
+next_generation(third_added_next_points)
 
 pq = []
 heapq.heapify(pq)
@@ -83,10 +120,15 @@ for a, b in visited:
 
 visited = {(0, 0)}
 answers = []
+already_answerd = set()
 while pq:
     a, b = heapq.heappop(pq)
     if prev_dict[(a, b)] in visited:
-        answers.append((*prev_dict[(a, b)], a, b))
+        candidate = (*prev_dict[(a, b)], a, b)
+        if candidate in already_answerd:
+            continue
+        already_answerd.add(candidate)
+        answers.append(candidate)
         visited.add((a, b))
     else:
         raise ValueError(f"prev_dict[{(a, b)}] = {prev_dict[(a, b)]} not in visited")
