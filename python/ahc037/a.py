@@ -59,7 +59,7 @@ third_added_next_points = defaultdict(list)
 while count <= 4 * n - 2:
     for great_point, next_points in added_next_points.items():
         if len(next_points) > 2:
-            num_index = min(1, len(next_points)// num_divided)
+            num_index = max(1, len(next_points)// num_divided)
             first_group = next_points[:num_index]
             second_group = next_points[num_index:]
             first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
@@ -86,7 +86,7 @@ def next_generation(added_next_points):
         next_generation_added_next_points = defaultdict(list)
         for great_point, next_points in added_next_points.items():
             if len(next_points) > 2:
-                num_index = min(1, len(next_points) // num_divided)
+                num_index = max(1, len(next_points) // num_divided)
                 first_group = next_points[:num_index]
                 second_group = next_points[num_index:]
                 first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
