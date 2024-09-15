@@ -34,16 +34,43 @@ while pq:
     next_dict[prev_dict[(a, b)]].append((a,b))
     visited.append((a, b))
 
+added_points = set()
+added_next_points = defaultdict(list)
+
 count = 0
 while count < 4 * n:
     for previous_point, next_points in next_dict.items():
         if len(next_points) > 1:
             intermediator = (min(list(map(lambda xy: xy[0], next_points))), min(list(map(lambda xy: xy[1], next_points))))
             visited.append(intermediator)
+            added_points.add(intermediator)
             for point in next_points:
                 prev_dict[point] = intermediator
+                added_next_points[intermediator].append(point)
             prev_dict[intermediator] = previous_point
             count += 1
+            if count >= 4 * n:
+                break
+    break
+
+while count <= 4 * n - 2:
+    for great_point, next_points in added_next_points.items():
+        if len(next_points) > 2:
+            first_group = next_points[:len(next_points) // 2]
+            second_group = next_points[len(next_points) // 2:]
+            first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
+            second_intermediator = (min(list(map(lambda xy: xy[0], second_group))), min(list(map(lambda xy: xy[1], second_group))))
+            visited.append(first_intermediator)
+            visited.append(second_intermediator)
+            for point in first_group:
+                prev_dict[point] = first_intermediator
+            prev_dict[first_intermediator] = great_point
+            for point in second_group:
+                prev_dict[point] = second_intermediator
+            prev_dict[second_intermediator] = great_point
+            count += 2
+            if count > 4 * n - 1:
+                break
     break
 
 pq = []
