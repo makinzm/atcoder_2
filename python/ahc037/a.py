@@ -12,6 +12,7 @@ def max_distance(s, t, aim):
         return s
 
 import heapq
+from collections import defaultdict
 
 pq = []
 heapq.heapify(pq)
@@ -20,6 +21,7 @@ for a, b in ab:
     heapq.heappush(pq, (a, b))
 
 prev_dict = {}
+next_dict = defaultdict(list)
 # prev_dict[(a,b)] = The max value of u < a and v < b in visited
 visited = [(0, 0)]
 
@@ -29,12 +31,28 @@ while pq:
     for u, v in visited:
         if u < a and v < b:
             prev_dict[(a, b)] = max_distance(prev_dict[(a,b)], (u,v), (a,b))
+    next_dict[prev_dict[(a, b)]].append((a,b))
     visited.append((a, b))
+
+count = 0
+while count < 4 * n:
+    for previous_point, next_points in next_dict.items():
+        if len(next_points) > 1:
+            intermediator = (min(list(map(lambda xy: xy[0], next_points))), min(list(map(lambda xy: xy[1], next_points))))
+            if intermediator not in visited:
+                visited.append(intermediator)
+                for point in next_points:
+                    prev_dict[point] = intermediator
+                prev_dict[intermediator] = previous_point
+                count += 1
+    break
 
 pq = []
 heapq.heapify(pq)
 
-for a, b in ab:
+for a, b in visited:
+    if a == 0 and b == 0:
+        continue
     heapq.heappush(pq, (a, b))
 
 visited = {(0, 0)}
