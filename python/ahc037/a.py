@@ -59,7 +59,14 @@ third_added_next_points = defaultdict(list)
 while count <= 4 * n - 2:
     for great_point, next_points in added_next_points.items():
         if len(next_points) > 2:
-            num_index = max(1, len(next_points)// num_divided)
+            odd = 0
+            if len(next_points) % 2 == 1:
+                middle_index = len(next_points) // 2 
+                first_group_distance = abs(next_points[middle_index][0] - great_point[0])
+                second_group_distance = abs(next_points[middle_index][1] - great_point[1])
+                if first_group_distance < second_group_distance:
+                    odd = 1
+            num_index = len(next_points)// num_divided + odd
             first_group = next_points[:num_index]
             second_group = next_points[num_index:]
             first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
@@ -86,7 +93,14 @@ def next_generation(added_next_points):
         next_generation_added_next_points = defaultdict(list)
         for great_point, next_points in added_next_points.items():
             if len(next_points) > 2:
-                num_index = max(1, len(next_points) // num_divided)
+                odd = 0
+                if len(next_points) % 2 == 1:
+                    middle_index = len(next_points) // 2 
+                    first_group_distance = abs(next_points[middle_index][0] - great_point[0])
+                    second_group_distance = abs(next_points[middle_index][1] - great_point[1])
+                    if first_group_distance < second_group_distance:
+                        odd = 1
+                num_index = len(next_points) // num_divided + odd
                 first_group = next_points[:num_index]
                 second_group = next_points[num_index:]
                 first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
