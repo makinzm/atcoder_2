@@ -1,7 +1,7 @@
 n = int(input())
 ab = [tuple(map(int, input().split())) for _ in range(n)]
 
-num_divided = 3
+num_divided = 2
 # Priority queue
 
 def max_distance(s, t, aim):
