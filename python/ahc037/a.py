@@ -123,6 +123,7 @@ def next_generation(added_next_points):
             break
         if num_updated == 0:
             break
+        added_next_points = next_generation_added_next_points
 
 
 next_generation(third_added_next_points)
