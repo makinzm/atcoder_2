@@ -24,7 +24,7 @@ for a, b in ab:
 prev_dict = {}
 next_dict = defaultdict(list)
 # prev_dict[(a,b)] = The max value of u < a and v < b in visited
-visited = [(0, 0)]
+visited = {(0, 0)}
 
 while pq:
     a, b = heapq.heappop(pq)
@@ -33,7 +33,7 @@ while pq:
         if u < a and v < b:
             prev_dict[(a, b)] = max_distance(prev_dict[(a,b)], (u,v), (a,b))
     next_dict[prev_dict[(a, b)]].append((a,b))
-    visited.append((a, b))
+    visited.add((a, b))
 
 added_points = set()
 added_next_points = defaultdict(list)
@@ -43,7 +43,7 @@ while count < 4 * n:
     for previous_point, next_points in next_dict.items():
         if len(next_points) > 1:
             intermediator = (min(list(map(lambda xy: xy[0], next_points))), min(list(map(lambda xy: xy[1], next_points))))
-            visited.append(intermediator)
+            visited.add(intermediator)
             added_points.add(intermediator)
             for point in next_points:
                 prev_dict[point] = intermediator
@@ -64,8 +64,8 @@ while count <= 4 * n - 2:
             second_group = next_points[num_index:]
             first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
             second_intermediator = (min(list(map(lambda xy: xy[0], second_group))), min(list(map(lambda xy: xy[1], second_group))))
-            visited.append(first_intermediator)
-            visited.append(second_intermediator)
+            visited.add(first_intermediator)
+            visited.add(second_intermediator)
             for point in first_group:
                 prev_dict[point] = first_intermediator
                 third_added_next_points[first_intermediator].append(point)
@@ -91,8 +91,8 @@ def next_generation(added_next_points):
                 second_group = next_points[num_index:]
                 first_intermediator = (min(list(map(lambda xy: xy[0], first_group))), min(list(map(lambda xy: xy[1], first_group))))
                 second_intermediator = (min(list(map(lambda xy: xy[0], second_group))), min(list(map(lambda xy: xy[1], second_group))))
-                visited.append(first_intermediator)
-                visited.append(second_intermediator)
+                visited.add(first_intermediator)
+                visited.add(second_intermediator)
                 for point in first_group:
                     prev_dict[point] = first_intermediator
                     next_generation_added_next_points[first_intermediator].append(point)
