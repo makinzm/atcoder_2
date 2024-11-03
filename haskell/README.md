@@ -17,3 +17,5 @@ ghci
 
 - [01-intro](https://www.seas.upenn.edu/~cis1940/spring13/lectures/01-intro.html)
 
+Useful Site: [Hoogle](https://hoogle.haskell.org/)
+
