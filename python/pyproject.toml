@@ -2,68 +2,24 @@
 name = "python"
 version = "0.1.0"
 description = "Add your description here"
-authors = [
-    { name = "makinzm", email = "makinzm@makinzm.invalid" }
-]
-dependencies = [
-    "numpy>=1.24.4",
-    "ruff>=0.1.6",
-    "lizard>=1.17.10",
-    "numba>=0.59.1",
-    "mypy>=1.9.0",
-    "pytest>=8.2.1",
-    "pydantic>=2.6.4",
-    "typing-extensions>=4.10.0",
-    "scipy>=1.13.0",
-    "networkx>=3.3",
-    "sympy>=1.12",
-    "sortedcontainers>=2.4.0",
-    "more-itertools>=10.2.0",
-    "shapely>=2.0.4",
-    "bitarray>=2.9.2",
-    "pandas>=2.2.2",
-    "pulp>=2.8.0",
-    "pyright>=1.1.376",
-]
 readme = "README.md"
-requires-python = ">= 3.8"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = []
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["abc314"]
-
-[tool.ruff]
-# Set the maximum line length to 79.
-line-length = 50
-
-[tool.ruff.lint]
-select = [
-    "ALL"
+requires-python = ">=3.11.4"
+dependencies = [
+    "numpy==1.24.1",
+    "scipy==1.10.1",
+    "networkx==3.0",
+    "sympy==1.11.1",
+    "sortedcontainers==2.4.0",
+    "more-itertools==9.0.0",
+    "shapely==2.0.0",
+    "bitarray==2.6.2",
+    "pulp==2.7.0",
+    "mpmath==1.2.1",
+    "pandas==1.5.2",
+    "z3-solver==4.12.1.0",
+    "scikit-learn==1.2.0",
+    "ortools==9.5.2237",
+    "setuptools==66.0.0",
+    "numba==0.57.0",
+    "pip>=24.3.1",
 ]
-ignore = [
-    "N802",     # Function Name
-    "N803",     # Argument Name
-    "N806",     # Variable Name
-    "N816",     # mixed Case Name
-    "N999",     # File name
-    "D205",     # Blank Line
-    "D415",     # End punctuation
-    "E501",     # line length
-    "T201",     # print
-    "TRY003",   # Try Specifying Message
-    "ANN204",   # __init__ return type
-    "INP001",   # __init__.py
-]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
