@@ -11,6 +11,14 @@ ghci
 // to exit -> Ctrl+D
 ```
 
+- compile
+
+```shell
+ghc -o hello hello.hs
+# ghc hello.hs
+./hello
+```
+
 # Tutorial
 
 [Lecture notes and assignments](https://www.seas.upenn.edu/~cis1940/spring13/lectures.html)
