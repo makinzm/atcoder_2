@@ -19,6 +19,13 @@ ghc -o hello hello.hs
 ./hello
 ```
 
+- install package
+
+```shell
+cabal install --lib vector vector-algorithms
+```
+
+
 # Tutorial
 
 [Lecture notes and assignments](https://www.seas.upenn.edu/~cis1940/spring13/lectures.html)
