@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 import Data.List (sort)
 -- Importing the 'sort' function to sort lists.
 
@@ -30,14 +32,15 @@ process :: [(Int, Integer)] -> Integer -> Maybe Integer
 process xa n = go xa 0 0  -- Start with sum and sumIdx as 0.
   where
     -- Define helper function 'go' processes the list recursively.
-    go [] sum sumIdx
+    go :: [(Int, Integer)] -> Integer -> Integer -> Maybe Integer
+    go [] !sum !sumIdx
         | sum == n  = Just $ n * (n + 1) `div` 2 - sumIdx
           -- If all elements are processed and sum equals 'n',
           -- compute and return the final answer.
         | otherwise = Nothing
           -- If sum doesn't equal 'n', return Nothing indicating failure.
 
-    go ((x, a):xs) sum sumIdx
+    go ((x, a):xs) !sum !sumIdx
         | sum < fromIntegral x - 1 = Nothing
           -- If the current sum is less than 'x - 1', it's invalid.
         | otherwise = go xs (sum + a) (sumIdx + a * fromIntegral x)
