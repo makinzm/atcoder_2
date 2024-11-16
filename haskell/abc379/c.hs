@@ -2,8 +2,6 @@
 
 import qualified Data.Vector.Unboxed as VU
 import qualified Data.Vector.Algorithms.Intro as VAI
-import Data.List (sort)
--- Importing the 'sort' function to sort lists.
 
 main :: IO ()
 main = do
