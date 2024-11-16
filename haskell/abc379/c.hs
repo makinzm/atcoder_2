@@ -2,19 +2,28 @@
 
 import qualified Data.Vector.Unboxed as VU
 import qualified Data.Vector.Algorithms.Intro as VAI
+import qualified Data.ByteString.Char8 as BS
+import Data.Maybe (fromJust)
+
+-- Define quick IO functions for Int and Vector Int.
+readInts2 :: IO (Int, Int)
+readInts2 = do
+    line <- BS.getLine
+    let [a, b] = map (fst . fromJust . BS.readInt) (BS.words line)
+    return (a, b)
+
+readIntVector :: Int -> IO (VU.Vector Int)
+readIntVector n = do
+    line <- BS.getLine
+    return $ VU.fromListN n $ map (fst . fromJust . BS.readInt) (BS.words line)
 
 main :: IO ()
 main = do
-    -- Read the first line and split it into two numbers as strings.
-    [nStr, mStr] <- words <$> getLine
     -- Convert the strings to integers.
-    let n = read nStr :: Int   -- Total number 'n'.
-        m = read mStr :: Int       -- Number of pairs 'm'.
-
+    (n, m) <- readInts2
     -- Read the second line, split into words, and convert each to an Int.
-    firsts <- VU.fromList . map read . words <$> getLine :: IO (VU.Vector Int)
-    -- Read the third line, split into words, and convert each to an Integer.
-    seconds <- VU.fromList . map read . words <$> getLine :: IO (VU.Vector Int)
+    firsts <- readIntVector m
+    seconds <- readIntVector m
     -- Pair up the firsts and seconds into a list of tuples.
     let xa = VU.zip firsts seconds
 

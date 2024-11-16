@@ -23,6 +23,7 @@ ghc -o hello hello.hs
 
 ```shell
 cabal install --lib vector vector-algorithms
+cabal install --lib bytestring
 ```
 
 
