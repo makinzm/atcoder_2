@@ -57,11 +57,11 @@ wheels = [
 
 [[package]]
 name = "more-itertools"
-version = "9.0.0"
+version = "10.5.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/13/b3/397aa9668da8b1f0c307bc474608653d46122ae0563d1d32f60e24fa0cbd/more-itertools-9.0.0.tar.gz", hash = "sha256:5a6257e40878ef0520b1803990e3e22303a41b5714006c32a3fd8304b26ea1ab", size = 104237 }
+sdist = { url = "https://files.pythonhosted.org/packages/51/78/65922308c4248e0eb08ebcbe67c95d48615cc6f27854b6f2e57143e9178f/more-itertools-10.5.0.tar.gz", hash = "sha256:5482bfef7849c25dc3c6dd53a6173ae4795da2a41a80faea6700d9f5846c5da6", size = 121020 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5d/87/1ec3fcc09d2c04b977eabf8a1083222f82eaa2f46d5a4f85f403bf8e7b30/more_itertools-9.0.0-py3-none-any.whl", hash = "sha256:250e83d7e81d0c87ca6bd942e6aeab8cc9daa6096d12c5308f3f92fa5e5c1f41", size = 52811 },
+    { url = "https://files.pythonhosted.org/packages/48/7e/3a64597054a70f7c86eb0a7d4fc315b8c1ab932f64883a297bdffeb5f967/more_itertools-10.5.0-py3-none-any.whl", hash = "sha256:037b0d3203ce90cca8ab1defbbdac29d5f993fc20131f3664dc8d6acfa872aef", size = 60952 },
 ]
 
 [[package]]
@@ -208,7 +208,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "bitarray", specifier = "==2.6.2" },
-    { name = "more-itertools", specifier = "==9.0.0" },
+    { name = "more-itertools", specifier = ">=10.5.0" },
     { name = "mpmath", specifier = "==1.2.1" },
     { name = "networkx", specifier = "==3.0" },
     { name = "numba", specifier = "==0.57.0" },
