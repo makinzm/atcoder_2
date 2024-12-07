@@ -1,6 +1,6 @@
-import sys
+from collections import deque
 
-sys.setrecursionlimit(10**7)
+DEBUG = False
 
 h,w,d = map(int, input().split())
 s = [list(input()) for _ in range(h)]
@@ -10,32 +10,40 @@ for i in range(h):
     for j in range(w):
         if s[i][j] == "H":
             start.add((i,j))
-s_initial = [i.copy() for i in s]
 
 move = [(1,0),(-1,0),(0,1),(0,-1)]
 
-visited = start.copy()
+def bfs(list_xyd):
+    q = deque(list_xyd)
+    dist = [[-1]*w for _ in range(h)]
+    for x,y,power in list_xyd:
+        dist[x][y] = 0
+    while q:
+        x,y,power = q.popleft()
+        if power == 0:
+            continue
+        for dx,dy in move:
+            nx,ny = x+dx,y+dy
+            if 0 <= nx < h and 0 <= ny < w and dist[nx][ny] == -1 and s[nx][ny] == ".":
+                dist[nx][ny] = dist[x][y] + 1
+                q.append((nx,ny,power-1))
+    return dist
 
-def dfs(x,y):
-    global ans, d
-    for dx,dy in move:
-        nx,ny = x+dx,y+dy
-
-        if 0<=nx<h and 0<=ny<w:
-            if s[nx][ny] == "H":
-                continue
-            elif s[nx][ny] == ".":
-                s[nx][ny] = "#"
-                if (nx,ny) not in visited:
-                    visited.add((nx,ny))
-                d -= 1
-                if d > 0:
-                    dfs(nx,ny)
-                d += 1
-
+list_xyd = []
 for x,y in start:
-    s = [i.copy() for i in s_initial]
-    dfs(x,y)
+    list_xyd.append((x,y,d))
 
-print(len(visited))
+dist = bfs(list_xyd)
 
+if DEBUG:
+    for i in range(h):
+        [print(str(dist[i][j]).ljust(3), end=" ") for j in range(w)]
+        print()
+
+ans = 0
+for i in range(h):
+    for j in range(w):
+        if dist[i][j] != -1:
+            if dist[i][j] <= d:
+                ans += 1
+print(ans)
