@@ -265,6 +265,8 @@ class Solver:
             if DEBUG:
                 print(f"CURRENT: {rest_turns=}, {len(candidates)=})", file=sys.stderr)
             new_candidates = []
+            num_candidates = len(candidates)
+            is_skip = False
             for _idx, (profit_est, idx, dist, cost_est) in enumerate(candidates):
                 # すでに埋まっている箇所であるかをチェック
                 # ここで「すでに敷設済かどうか」簡単チェック
@@ -272,18 +274,19 @@ class Solver:
                 #   - station可能か (EMPTY or rail上書き)
                 #   - railはEMPTYのみ
                 #   → もしダメならスキップ
-                if not self._can_place_station(self.home[idx]):
-                    continue
-                if not self._can_place_station(self.workplace[idx]):
-                    continue
-                can_build_all = True
-                route_rail = self._build_l_shaped_path(self.home[idx], self.workplace[idx])
-                for (t, rr, cc) in route_rail:
-                    if not self._can_place_rail(rr, cc):
-                        can_build_all = False
-                        break
-                if not can_build_all:
-                    continue
+                if not is_skip:
+                    if not self._can_place_station(self.home[idx]):
+                        continue
+                    if not self._can_place_station(self.workplace[idx]):
+                        continue
+                    can_build_all = True
+                    route_rail = self._build_l_shaped_path(self.home[idx], self.workplace[idx])
+                    for (t, rr, cc) in route_rail:
+                        if not self._can_place_rail(rr, cc):
+                            can_build_all = False
+                            break
+                    if not can_build_all:
+                        continue
 
                 # 時間が足りるかどうかをチェック
                 needed_cells = len(route_rail) + 2
@@ -326,6 +329,8 @@ class Solver:
 
             # 候補を更新
             candidates = new_candidates + candidates[_idx+1:]
+
+            is_skip = len(candidates) == num_candidates
 
             # 何もしないという選択について追加
             rest_turns -= 1
