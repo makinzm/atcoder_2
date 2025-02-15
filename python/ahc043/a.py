@@ -16,7 +16,7 @@ RAIL_RIGHT_DOWN = 6
 COST_STATION = 5000
 COST_RAIL = 100
 
-DEBUG = True
+DEBUG = False
 
 def input():
     return sys.stdin.readline()
@@ -263,7 +263,7 @@ class Solver:
         income_by_turn = 0
         while candidates:
             if DEBUG:
-                print(f"CURRENT: {self.money=}, {rest_turns=}, {income_by_turn=}", file=sys.stderr)
+                print(f"CURRENT: {rest_turns=}, {len(candidates)=})", file=sys.stderr)
             new_candidates = []
             for _idx, (profit_est, idx, dist, cost_est) in enumerate(candidates):
                 # すでに埋まっている箇所であるかをチェック
@@ -287,17 +287,15 @@ class Solver:
 
                 # 時間が足りるかどうかをチェック
                 needed_cells = len(route_rail) + 2
-                if rest_turns < needed_cells + 10: # 集金ターンも含めて10ターン分余裕を持つ
-                    # 時間が足りないのでスキップ
+                
+                # 現在時刻から工事にかかる時間を引いたあとの収益が、コストを上回るか？
+                if (rest_turns - needed_cells) * dist < cost_est:
+                    # 価値がないのでスキップ
                     continue
 
                 # 予算が足りるかどうかをチェック
-                if DEBUG:
-                    print(f"TRY TO BUILD: {idx=}, {dist=}, {cost_est=}, {self.money=} {profit_est=}", file=sys.stderr)
-                if self.money < cost_est:
+                if self.money <= cost_est:
                     # 次のタイミングで埋められるかもしれないので、次に回す
-                    if DEBUG:
-                        print(f"SKIP TO BUILD: {idx=}, {dist=}, {cost_est=}, {self.money=} {profit_est=}", file=sys.stderr)
                     new_candidates.append((profit_est, idx, dist, cost_est))
                     continue
 
@@ -317,6 +315,7 @@ class Solver:
                 plan.append((STATION, self.workplace[idx][0], self.workplace[idx][1]))
                 self.field.build(STATION, self.workplace[idx][0], self.workplace[idx][1])
                 self.money -= cost_est  # 仮に予算を消費(ここで消費する)
+                assert self.money >= 0
 
                 rest_turns -= needed_cells  # 残りターン数を減らす
 
@@ -333,7 +332,6 @@ class Solver:
             plan.append((DO_NOTHING, 0, 0))
 
             self.money += income_by_turn  # 収益を加算
-
 
         # 余った時間は何もしないで待つ
         for _ in range(rest_turns):
@@ -355,28 +353,6 @@ class Solver:
                 # 距離ぶんの収入
                 income += distance(self.home[i], self.workplace[i])
         return income
-
-    def _build_rail(self, rail_type: int, r: int, c: int) -> None:
-        """
-        線路配置: コスト100
-        """
-        # 資金が足りない(あるいはマイナスになる)場合はNGだが、ここでは
-        # すでに cost_est 分を差し引いているため簡単に通す
-        self.field.build(rail_type, r, c)
-        self.money -= COST_RAIL
-        self.actions.append(Action(rail_type, (r, c)))
-
-    def _build_station(self, r: int, c: int) -> None:
-        """
-        駅配置: コスト5000
-        """
-        self.field.build(STATION, r, c)
-        self.money -= COST_STATION
-        self.actions.append(Action(STATION, (r, c)))
-
-    def _build_nothing(self) -> None:
-        self.actions.append(Action(DO_NOTHING, (0, 0)))
-        # 待機なのでコスト変動なし
 
     ### 以下、L字経路生成 & 設置可能チェック ###
 
