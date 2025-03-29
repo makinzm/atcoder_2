@@ -1,8 +1,7 @@
 import sys
 
 def flush_print(*args, **kwargs):
-    print(*args, **kwargs)
-    sys.stdout.flush()
+    print(*args, **kwargs, flush=True)
 
 def solve():
     input_data = sys.stdin.read().strip().split()
