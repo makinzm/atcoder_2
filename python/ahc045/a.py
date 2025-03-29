@@ -97,21 +97,13 @@ def solve():
     flush_print("!")
 
     # ▼各グループの内容を出力する▼
-    #   単純に都市を 0,1,2,... の順番で切り分け、同じグループ内は
-    #   鎖状につなぐだけ。
     index_start = 0
-    for size in G:
-        # グループに属する都市
-        group_cities = list(range(index_start, index_start + size))
-        index_start += size
-        
-        # まずグループ内の都市一覧を1行で出力 (スペース区切り)
-        flush_print(" ".join(map(str, group_cities)))
-        
-        # 次にグループ内を連結にするための辺を (size - 1) 本出力
-        # 今は (i, i+1) のチェーン(鎖)構造で接続しているだけ
-        for i in range(size - 1):
-            flush_print(group_cities[i], group_cities[i+1])
+    for i, cities in enumerate(groups):
+        # グループに属する都市たち
+        flush_print(" ".join(map(str, cities)))
+        # (size - 1) のエッジ (a, b) を出力
+        for (a, b) in group_mst_edges[i]:
+            flush_print(a, b)
 
 if __name__ == "__main__":
     solve()
