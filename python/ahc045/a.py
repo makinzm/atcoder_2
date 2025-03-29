@@ -1,5 +1,10 @@
+import sys
+
+def flush_print(*args, **kwargs):
+    print(*args, **kwargs)
+    sys.stdout.flush()
+
 def solve():
-    import sys
     input_data = sys.stdin.read().strip().split()
     # 先頭から順番に読み取るためのイテレータを作る
     it = iter(input_data)
@@ -23,7 +28,7 @@ def solve():
         rectangles.append((lx, rx, ly, ry))
 
     # ▼クエリを発行しないのでここで “!” を出力し、クエリパートを終了させる▼
-    print("!")
+    flush_print("!")
     
     # ▼各グループの内容を出力する▼
     index_start = 0
@@ -33,12 +38,12 @@ def solve():
         index_start += size
         
         # まずグループ内の都市一覧を出力 (スペース区切り)
-        print(" ".join(map(str, group_cities)))
+        flush_print(" ".join(map(str, group_cities)))
         
         # 次にグループ内を連結にするための辺を (size - 1) 本出力
         # 今は単に (i, i+1) の「鎖状」に繋ぐだけ
         for i in range(size - 1):
-            print(group_cities[i], group_cities[i+1])
+            flush_print(group_cities[i], group_cities[i+1])
 
 if __name__ == "__main__":
     solve()
