@@ -213,13 +213,17 @@ for i in range(N):
 # get edges from queries
 edges = []
 for k in range(M):
-    edges.append([])
-    for i in range(0, G[k] - 1, 2):
-        if i < G[k] - 2:
-            ret = query(groups[k][i : i + 3])
-            edges[k].extend(ret)
-        else:
-            edges[k].append(groups[k][i : i + 2])
+    gcities = groups[k]
+    gsize = len(gcities)
+    if gsize <= L and Q > 0 and gsize >= 2:
+        ret = query(gcities)
+        edges.append(ret)
+        Q -= 1
+    else:
+        chain = []
+        for i in range(gsize - 1):
+            chain.append((gcities[i], gcities[i + 1]))
+        edges.append(chain)
 
 # output answer
 answer(groups, edges)
